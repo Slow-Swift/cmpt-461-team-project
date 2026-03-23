@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3276118085288016545}
   - component: {fileID: 8024971894780850668}
   - component: {fileID: 388779298909133961}
-  - component: {fileID: 7711462120189540555}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -92,27 +91,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &7711462120189540555
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 491536059675119547}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 0.6
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940699}
 --- !u!1 &532520267962716840
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,7 +119,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 39.99999}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3276118085288016545}
@@ -213,6 +191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2316188173893855615}
   - component: {fileID: 2066377908527784411}
+  - component: {fileID: 6534600056593250495}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -254,4 +233,24 @@ MonoBehaviour:
   hitTime: 10
   graceTime: 0.2
   ring: {fileID: 532520267962716840}
-  model: {fileID: 491536059675119547}
+--- !u!135 &6534600056593250495
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2456476753466852760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.6
+  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940699}

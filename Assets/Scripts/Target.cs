@@ -11,40 +11,28 @@ public class Target : MonoBehaviour
 
     [SerializeField] GameObject ring;
 
-    [SerializeField] GameObject model;
-
-    void Start()
+    public void SetTimes(float spawnTime, float hitTime)
     {
-        model.SetActive(false);
-        // This is a bad way of spawning the target
-        // and will lead to lag. Better to actually spawn it Int.
-        Invoke("ActivateTarget", spawnTime);
-    }
-
-    void ActivateTarget()
-    {
-        Debug.Log("Showing");
-        model.SetActive(true);
+        this.spawnTime = spawnTime;
+        this.hitTime = hitTime;
     }
 
     void Update()
     {
         float liveTime = Time.time - spawnTime;
-        if (liveTime < 0) return;
 
-        ring.transform.localScale = Vector3.one * Mathf.Lerp(ringStartScale, ringEndScale, liveTime / hitTime);
+        ring.transform.localScale = Vector3.one * Mathf.Lerp(ringStartScale, ringEndScale, liveTime / (hitTime - spawnTime));
         
-        if (liveTime > hitTime + graceTime)
+        if (Time.time > hitTime + graceTime)
         {
             Destroy(gameObject);
         }
     }
 
-    void OnCollisionEnter(Collision c)
+    void OnCollisionEnter(Collision collision)
     {
-        Destroy(c.gameObject);
-        Destroy(gameObject);
+        Destroy(collision.gameObject);
+        Destroy(this.gameObject);
 
-        // TODO: Add score
     }
 }
