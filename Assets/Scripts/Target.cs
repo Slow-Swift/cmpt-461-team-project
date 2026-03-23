@@ -26,6 +26,10 @@ public class Target : MonoBehaviour
         if (Time.time > hitTime + graceTime)
         {
             Destroy(gameObject);
+            if (UI_Manager.instance != null)
+            {
+                UI_Manager.instance.missCount++;
+            }
         }
     }
 
@@ -33,6 +37,10 @@ public class Target : MonoBehaviour
     {
         Destroy(collision.gameObject);
         Destroy(this.gameObject);
-
+        if (UI_Manager.instance != null)
+        {
+            UI_Manager.instance.hitCount++;
+            UI_Manager.instance.score += 1; // TODO: Improve score
+        }
     }
 }

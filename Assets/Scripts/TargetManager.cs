@@ -22,6 +22,7 @@ public class TargetManager : MonoBehaviour
 
     void Start()
     {
+        UI_Manager.instance.timeOffset = Time.time;
         startTime = Time.time + waitTime;
         targetSpawns.Sort((a,b) => a.time.CompareTo(b.time));
     }
