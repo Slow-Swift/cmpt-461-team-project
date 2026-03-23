@@ -16,6 +16,7 @@ public class TargetManager : MonoBehaviour
     [SerializeField] Target targetPrefab;
     [SerializeField] float targetShowTime;
     [SerializeField] List<TargetSpawn> targetSpawns;
+    [SerializeField] AudioSource song;
 
     int nextTargetIndex = 0;
     float startTime;
@@ -25,6 +26,12 @@ public class TargetManager : MonoBehaviour
         UI_Manager.instance.timeOffset = Time.time;
         startTime = Time.time + waitTime;
         targetSpawns.Sort((a,b) => a.time.CompareTo(b.time));
+        Invoke("PlaySong", waitTime); //This is aweful
+    }
+
+    void PlaySong()
+    {
+        song.Play();
     }
 
     void Update()
