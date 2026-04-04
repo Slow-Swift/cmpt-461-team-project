@@ -10,6 +10,9 @@ public class Target : MonoBehaviour
     [SerializeField] float graceTime = 0.2f;
 
     [SerializeField] GameObject ring;
+    [SerializeField] Animator animator;
+
+    bool hit = false;
 
     public void SetTimes(float spawnTime, float hitTime)
     {
@@ -23,9 +26,12 @@ public class Target : MonoBehaviour
 
         ring.transform.localScale = Vector3.one * Mathf.Lerp(ringStartScale, ringEndScale, liveTime / (hitTime - spawnTime));
         
-        if (Time.time > hitTime + graceTime)
+        if (!hit && Time.time > hitTime + graceTime)
         {
-            Destroy(gameObject);
+            animator.SetTrigger("Miss");
+            Destroy(gameObject, 1000);
+            GetComponent<SphereCollider>().enabled = false;
+            enabled = false;
             if (UI_Manager.instance != null)
             {
                 UI_Manager.instance.missCount++;
@@ -35,8 +41,11 @@ public class Target : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        hit = true;
         Destroy(collision.gameObject);
-        Destroy(this.gameObject);
+        animator.SetTrigger("Hit");
+        Destroy(gameObject, 1000);
+        GetComponent<SphereCollider>().enabled = false;
         if (UI_Manager.instance != null)
         {
             UI_Manager.instance.hitCount++;
