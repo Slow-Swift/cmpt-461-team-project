@@ -21,6 +21,8 @@ public class TargetManager : MonoBehaviour
     int nextTargetIndex = 0;
     float startTime;
 
+    bool spawning = true;
+
     void Start()
     {
         UI_Manager.instance.timeOffset = Time.time;
@@ -36,6 +38,8 @@ public class TargetManager : MonoBehaviour
 
     void Update()
     {
+        if (!spawning) return;
+
         if (nextTargetIndex >= targetSpawns.Count) return;
         TargetSpawn nextTargetSpawn = targetSpawns[nextTargetIndex];
 
@@ -54,5 +58,12 @@ public class TargetManager : MonoBehaviour
         {
            Gizmos.DrawSphere(spawn.position, 0.5f); 
         }
+    }
+
+    public void CancelSpawns()
+    {
+        spawning = false;
+        enabled = false;
+        song.Stop();
     }
 }

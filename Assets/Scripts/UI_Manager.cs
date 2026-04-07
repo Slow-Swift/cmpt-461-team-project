@@ -1,24 +1,41 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI_Manager : MonoBehaviour
 {
-    [HideInInspector] public float score;
-    [HideInInspector] public int hitCount;
-    [HideInInspector] public int missCount;
+    
 
     public static UI_Manager instance;
+
+    [SerializeField] float maxHealth = 100;
+    [SerializeField] float missHealth = 10;
+    [SerializeField] float maxHitHealth = 10;
 
     [SerializeField] TMP_Text scoreText;
     [SerializeField] TMP_Text hitText;
     [SerializeField] TMP_Text missText;
     [SerializeField] TMP_Text countdownText;
-    [SerializeField] GameObject levelClearedObject;
+    [SerializeField] GameObject gameOverObject;
+    [SerializeField] GameObject levelFailedText;
+    [SerializeField] GameObject levelCompleteText;
+    [SerializeField] TMP_Text comboText;
+    [SerializeField] Image healthImage;
+    [SerializeField] TargetManager targetManager;
 
     public float timeOffset;
     [SerializeField] float startTime;
     [SerializeField] float endTime;
+
+    [SerializeField] float comboMultiplier = 0.5f;
+
+    float health;
+    float score;
+    int hitCount;
+    int missCount;
+    bool gameOver = false;
+    int combo = 0;
 
     void Awake()
     {
@@ -26,6 +43,8 @@ public class UI_Manager : MonoBehaviour
             Destroy(instance.gameObject);
         
         instance = this;
+        health = maxHealth;
+        UpdateComboText();
     }
 
     void Update()
@@ -42,9 +61,62 @@ public class UI_Manager : MonoBehaviour
             countdownText.text = Mathf.Ceil(startTime - Time.time + timeOffset).ToString();
         }
 
-        if (Time.time - timeOffset > endTime)
+        if (!gameOver && (Time.time - timeOffset > endTime))
         {
-            levelClearedObject.SetActive(true);
+            OnLevelComplete();
+        }
+    }
+
+    public void AddScore(int amount)
+    {
+        hitCount += 1;
+        score += amount * (combo * comboMultiplier + 1);
+        health += (amount / 100f) * maxHitHealth;
+        health = Mathf.Clamp(health, 0, maxHealth);
+        healthImage.fillAmount = health / maxHealth;
+        combo++;
+        UpdateComboText();
+    }
+
+    void UpdateComboText()
+    {
+        comboText.text = $"{combo} \n {combo * comboMultiplier + 1}x";
+    }
+
+    public void OnMiss()
+    {
+        if (gameOver) return;
+
+        missCount++;
+        health -= missHealth;
+        healthImage.fillAmount = health / maxHealth;
+        combo = 0;
+        UpdateComboText();
+
+        if (health <= 0)
+        {
+            OnLevelFailed();
+        }
+    }
+
+    void OnLevelComplete()
+    {
+        gameOver = true;
+        gameOverObject.SetActive(true);
+        levelCompleteText.SetActive(true);
+    }
+
+    void OnLevelFailed()
+    {
+        gameOver = true;
+        gameOverObject.SetActive(true);
+        levelFailedText.SetActive(true);
+        targetManager.CancelSpawns();
+
+        Target[] targets = FindObjectsByType<Target>(FindObjectsSortMode.None);
+        foreach (Target target in targets)
+        {
+            target.OnLevelFailed();
         }
     }
 
