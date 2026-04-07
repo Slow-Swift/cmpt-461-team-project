@@ -28,7 +28,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] float startTime;
     [SerializeField] float endTime;
 
-    [SerializeField] float comboMultiplier = 0.5f;
+    [SerializeField] float comboMultiplier = 0.25f;
 
     float health;
     float score;
@@ -70,7 +70,7 @@ public class UI_Manager : MonoBehaviour
     public void AddScore(int amount)
     {
         hitCount += 1;
-        score += amount * (combo * comboMultiplier + 1);
+        score += Mathf.Floor(amount * (combo * comboMultiplier + 1));
         health += (amount / 100f) * maxHitHealth;
         health = Mathf.Clamp(health, 0, maxHealth);
         healthImage.fillAmount = health / maxHealth;
